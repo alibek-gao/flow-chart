@@ -1,5 +1,7 @@
 import Flow from './Flow';
 import { useState } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
+import ErrorFallback from './ErrorFallback';
 
 export default () => {
   const [initial, setInitial] = useState(null)
@@ -33,7 +35,9 @@ export default () => {
           <button onClick={() => setInitial({nodes: [], edges: []})}>Create new chart</button>
         </div>
       )}
-      {initial && <Flow initial={initial}/>}
+      <ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => setInitial(null)}>
+        {initial ? <Flow initial={initial}/> : <div />}
+      </ErrorBoundary>
     </>
   )
 }
